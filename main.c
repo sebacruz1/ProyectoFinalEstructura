@@ -4,6 +4,7 @@
 #include <math.h>
 #include <unistd.h>
 #include "Map.h"
+#include "cartas.h"
 
 #define LINEA "----------------------------------\n"
 
@@ -19,8 +20,8 @@ int is_equal_string(void *key1, void *key2)
 typedef struct
 {
     char nombre[20];
-    int cantidad;
-    int cartas[3];
+    int puntos;
+    char *cartas[3];
 } jugadorPiramide;
 
 void tomanji(Map *jugadores)
@@ -30,6 +31,19 @@ void tomanji(Map *jugadores)
 
 void piramide(Map *jugadores)
 {
+    Baraja baraja1;
+    Baraja baraja2;
+
+    inicializarBaraja(baraja1);
+    inicializarBaraja(baraja2);
+
+    barajar(baraja1);
+    barajar(baraja2);
+
+    Stack *pila = stack_create();
+    
+
+
     printf("\e[1;1H\e[2J");
     printf(LINEA);
     printf("|   Bienvenido a piramide.        |\n");
@@ -38,7 +52,15 @@ void piramide(Map *jugadores)
     int cantidadJugadores;
     scanf("%d", &cantidadJugadores);
 
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        jugadorPiramide *jugador = (jugadorPiramide *) malloc(sizeof(jugadorPiramide));
+        printf("Ingrese nombre del jugador %d: ", i + 1);
+        scanf("%s", jugador->nombre);
+        jugador->puntos = 0;
 
+
+    }
 
     for (int i = 1; i <= 7; i++) 
     {
