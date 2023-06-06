@@ -41,8 +41,8 @@ void piramide(Map *jugadores)
     barajar(baraja1);
     barajar(baraja2);
 
-    Stack *pila1 = stack_create();
-    Stack *pila2 = stack_create();
+    //Stack *pila1 = stack_create();
+    //Stack *pila2 = stack_create();
 
     printf("\e[1;1H\e[2J");
     printf(LINEA);
@@ -65,17 +65,25 @@ void piramide(Map *jugadores)
             exit(0);
         }
 
+        char nombre[21];
         printf("Ingrese nombre del jugador %d: ", i + 1);
-        char n[20];
-        scanf("%s", n);
-        printf("a");
+        scanf("%20s", nombre); 
         getchar();
-        strcpy(jugador->nombre, n);
+        jugador->nombre = nombre;
+        printf("a");
+
         jugador->puntos = 0;
         for (int j = 0; j < 3; j++)
         {
             jugador->cartas[j] = malloc(sizeof(char) * 20);
-            strcpy(jugador->cartas[j],baraja1[k].numero);
+            
+            if (jugador->cartas[j] == NULL)
+            {
+                printf("No se pudo asignar memoria.\n");
+                exit(0);
+            }
+
+            strcpy(jugador->cartas[j], baraja1[k].numero);
             strcat(jugador->cartas[j], "de");
             strcat(jugador->cartas[j],baraja1[k].palo);
             k++;
