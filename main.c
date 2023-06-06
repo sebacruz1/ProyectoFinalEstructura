@@ -3,22 +3,32 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
+#include "Map.h"
 
 #define LINEA "----------------------------------\n"
 
+int is_equal_string(void *key1, void *key2)
+{
+    if (strcmp((char *)key1, (char *)key2) == 0)
+    {
+        return 1;
+    }
+    return 0;
+}
 
 typedef struct
 {
     char nombre[20];
     int cantidad;
+    int cartas[3];
 } jugadorPiramide;
 
-void tomanji()
+void tomanji(Map *jugadores)
 {
 
 }
 
-void piramide()
+void piramide(Map *jugadores)
 {
     printf("\e[1;1H\e[2J");
     printf(LINEA);
@@ -28,27 +38,33 @@ void piramide()
     int cantidadJugadores;
     scanf("%d", &cantidadJugadores);
 
-     for (int i = 1; i <= 7; i++) 
-     {
-        for (int j = 1; j <= 7 - i; j++) 
-        {
-            printf(" ");
-        }
 
-        for (int k = 1; k <= 2 * i - 1; k++) 
-        {
-            if (i == 1) printf("**");
-            else
-                printf("*");
-        }
 
-        printf("\n");
+    for (int i = 1; i <= 7; i++) 
+    {
+       for (int j = 1; j <= 7 - i; j++) 
+       {
+           printf(" ");
+       }
+       for (int k = 1; k <= 2 * i - 1; k++) 
+       {
+           if (i == 1) printf("**");
+           else
+               printf("*");
+       }
+       printf("\n");
     }
+    
+
+    printf("\n");
+    printf("Entregando cartas...");
 
 }
 
 int main()
-{   int opcion;
+{   
+    Map *jugadores = createMap(is_equal_string);
+    int opcion;
     printf(LINEA);
     printf("|           Bienvenidos!         |\n");
     printf(LINEA);
@@ -74,7 +90,7 @@ int main()
                 printf("Entrando a tomanji...\n");
                 sleep(1);
             }
-            tomanji();
+            tomanji(jugadores);
             break;
         case 2:
             for (int i = 0; i < 1; i++)
@@ -89,7 +105,7 @@ int main()
                 printf("Entrando a piramide...\n");
                 sleep(1);
             }
-            piramide();
+            piramide(jugadores);
             break;
     }
 
