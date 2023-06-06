@@ -78,9 +78,10 @@ void stackCartas(Baraja baraja, Stack *pila)
 
     for (i=0; i<CARTAS; i++)
     {
+
         char *a = strcpy(a, baraja[i].numero);
-        a = strcpy(a, "de");
-        a = strcpy(a, baraja[i].palo);
+        a = strcat(a, " de ");
+        a = strcat(a, baraja[i].palo);
         stack_push(pila, a);
     }
         

@@ -31,6 +31,7 @@ void tomanji(Map *jugadores)
 
 void piramide(Map *jugadores)
 {
+
     Baraja baraja1;
     Baraja baraja2;
 
@@ -40,25 +41,47 @@ void piramide(Map *jugadores)
     barajar(baraja1);
     barajar(baraja2);
 
-    Stack *pila = stack_create();
-    
-
+    Stack *pila1 = stack_create();
+    Stack *pila2 = stack_create();
 
     printf("\e[1;1H\e[2J");
     printf(LINEA);
     printf("|   Bienvenido a piramide.        |\n");
     printf(LINEA);
     printf("Cuantos jugadores van a jugar?\n");
-    int cantidadJugadores;
+    int cantidadJugadores = 0;
     scanf("%d", &cantidadJugadores);
+    getchar();
+
+    int k = 0;
 
     for (int i = 0; i < cantidadJugadores; i++)
     {
-        jugadorPiramide *jugador = (jugadorPiramide *) malloc(sizeof(jugadorPiramide));
-        printf("Ingrese nombre del jugador %d: ", i + 1);
-        scanf("%s", jugador->nombre);
-        jugador->puntos = 0;
+        jugadorPiramide *jugador= (jugadorPiramide *)malloc(sizeof(jugadorPiramide));
 
+        if (jugador == NULL)
+        {
+            printf("No se pudo asignar memoria.\n");
+            exit(0);
+        }
+
+        printf("Ingrese nombre del jugador %d: ", i + 1);
+        char n[20];
+        scanf("%s", n);
+        printf("a");
+        getchar();
+        strcpy(jugador->nombre, n);
+        jugador->puntos = 0;
+        for (int j = 0; j < 3; j++)
+        {
+            jugador->cartas[j] = malloc(sizeof(char) * 20);
+            strcpy(jugador->cartas[j],baraja1[k].numero);
+            strcat(jugador->cartas[j], "de");
+            strcat(jugador->cartas[j],baraja1[k].palo);
+            k++;
+        }
+
+        insertMap(jugadores, jugador->nombre, jugador);
 
     }
 
