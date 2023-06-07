@@ -78,11 +78,18 @@ void stackCartas(Baraja baraja, Stack *pila)
 
     for (i=0; i<CARTAS; i++)
     {
-
-        char *a = strcpy(a, baraja[i].numero);
-        a = strcat(a, " de ");
-        a = strcat(a, baraja[i].palo);
+        Carta *a = (Carta *)malloc(sizeof(Carta));
+        *a = baraja[i];
         stack_push(pila, a);
     }
         
+}
+
+
+void crearPila(Stack *pila)
+{
+    Baraja baraja;
+    inicializarBaraja(baraja);
+    barajar(baraja);
+    stackCartas(baraja, pila);
 }
