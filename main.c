@@ -93,9 +93,9 @@ void piramide(Map *jugadores)
         {
             printf("* \n");
             for (int j = 0; j < 7 - i - 1; j++) 
-        {
-            printf(" ");
-        }
+            {
+                printf(" ");
+            }
         }
 
         for (int k = 0; k < i + 1; k++) 
