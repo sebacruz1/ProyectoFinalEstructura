@@ -35,10 +35,10 @@ void inicializarBaraja(Baraja baraja)
 
     for (i = 0; i < PALOS; i++)
     {
-        for (j = 0; j < NUMEROS; j++)
+        for (j = 1; j <= NUMEROS; j++)
         {
-            baraja[NUMEROS * i + j].palo = (Palo)i;
-            baraja[NUMEROS * i + j].numero = j;
+            baraja[NUMEROS * i + j - 1].palo = (Palo)i;
+            baraja[NUMEROS * i + j - 1].numero = j;
         }
     }
 }

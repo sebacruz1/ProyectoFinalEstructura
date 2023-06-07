@@ -29,6 +29,153 @@ void tomanji(Map *jugadores)
 
 }
 
+void mostrarJugadores(Map *jugadores, int cantidadJugadores)
+{
+    jugadorPiramide *jugador = firstMap(jugadores);
+    {
+        for (int i = 0; i < cantidadJugadores; i++)
+        {
+            printf("Jugador: %s\n", jugador->nombre);
+            printf("Puntos: %d\n", jugador->puntos);
+            printf("Cartas: ");
+            for (int j = 0; j < 3; j++)
+            {
+                switch (jugador->cartas[j]->numero)
+                {
+                case 1:
+                    printf("A de");
+                    break;
+                case 11:
+                    printf("J de");
+                    break;
+                case 12:
+                    printf("Q de");
+                    break;
+                case 13:
+                    printf("K de");
+                    break;
+
+                default:
+                    printf("%d de", jugador->cartas[j]->numero);
+                    break;
+                }
+
+
+                switch (jugador->cartas[j]->palo)
+                {
+                case Pica:
+                    printf(" Picas ");
+                    break;
+                case Corazon:
+                    printf(" Corazones");
+                    break;
+                case Diamante:
+                    printf(" Diamantes");
+                    break;
+                case Trebol:
+                    printf(" Treboles");
+                    break;
+                default:
+                    break;
+                }
+
+                if (j != 2)
+                {
+                    printf(" - ");
+                }
+
+            }
+            printf("\n\n");
+            printf(LINEA);
+            printf("\n");
+
+            jugador = nextMap(jugadores);
+        }
+    }
+}
+
+void mostrarPiramide()
+{
+    for (int i = 0; i < 7; i++) 
+    {
+
+        for (int j = 0; j < 7 - i - 1; j++) 
+        {
+            printf(" ");
+        }
+        
+        if (i == 0) 
+        {
+            printf("* \n");
+            for (int j = 0; j < 7 - i - 1; j++) 
+            {
+                printf(" ");
+            }
+        }
+
+        for (int k = 0; k < i + 1; k++) 
+        {
+            printf("* ");
+        }
+        
+        printf("\n");
+    }
+    
+    printf("\n");
+}
+
+void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
+{
+    Carta *carta[30];
+        
+    int ultimaCarta = 29;
+
+    
+    for (int i = 0; i < 30; i++)
+    {
+        carta[i] = malloc(sizeof(Carta));
+        carta[i] = stack_pop(pila);
+    }
+    
+    for (int i = 0; i < 7; i++) 
+    {
+
+        for (int j = 0; j < 7 - i - 1; j++) 
+        {
+            printf(" ");
+        }
+        
+        if (i == 0) 
+        {
+            printf("* \n");
+            for (int j = 0; j < 7 - i - 1; j++) 
+            {
+                printf(" ");
+            }
+        }
+
+        for (int k = 0; k < i + 1; k++) 
+        {
+            if (k == ultimaCarta)
+            {
+                printf("%d ", carta[k]->numero);
+                printf("%d ", carta[k]->palo);
+                for (int z = k; z < 30; z++)
+                {
+                    printf("%d ", carta[z]->numero);
+                }
+                ultimaCarta--;
+            }
+            else
+                printf("* ");
+        }
+        
+        printf("\n");
+    }
+    
+
+}
+
 void piramide(Map *jugadores)
 {
 
@@ -46,6 +193,11 @@ void piramide(Map *jugadores)
     int cantidadJugadores = 0;
     scanf("%d", &cantidadJugadores);
     getchar();
+    if (cantidadJugadores < 0 || cantidadJugadores > 15)
+    {
+        printf("Cantidad de jugadores invalida.\n");
+        exit(0);
+    }
 
     for (int i = 0; i < cantidadJugadores; i++)
     {
@@ -80,50 +232,24 @@ void piramide(Map *jugadores)
         insertMap(jugadores, jugador->nombre, jugador);
 
     }
-    
-    for (int i = 0; i < 7; i++) 
-    {
 
-        for (int j = 0; j < 7 - i - 1; j++) 
-        {
-            printf(" ");
-        }
-        
-        if (i == 0) 
-        {
-            printf("* \n");
-            for (int j = 0; j < 7 - i - 1; j++) 
-            {
-                printf(" ");
-            }
-        }
-
-        for (int k = 0; k < i + 1; k++) 
-        {
-            printf("* ");
-        }
-        
-        printf("\n");
-    }
-    
-
-
+    printf("\e[1;1H\e[2J");
+    mostrarPiramide();
 
     printf("\n");
+    printf(LINEA);
 
-    jugadorPiramide *jugador = firstMap(jugadores);
-    for (int i = 0; i < cantidadJugadores; i++)
-    {
-        printf("Jugador: %s\n", jugador->nombre);
-        printf("Puntos: %d\n", jugador->puntos);
-        printf("Cartas: ");
-        for (int j = 0; j < 3; j++)
-        {
-            printf("%d de %u - ", jugador->cartas[j]->numero, (Palo)jugador->cartas[j]->palo);
-        }
-        printf("\n");
-        jugador = nextMap(jugadores);
-    }
+    mostrarJugadores(jugadores, cantidadJugadores);
+    fflush(stdin);
+    printf("Presione enter para continuar.\n");
+    getchar();
+
+    printf(LINEA);
+    printf("Revelando primera carta:\n");
+    sleep(1);
+    printf("\e[1;1H\e[2J");
+
+    juegoPiramide(jugadores, cantidadJugadores, pila2);
 }
 
 int main()
