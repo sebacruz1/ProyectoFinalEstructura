@@ -60,7 +60,6 @@ void piramide(Map *jugadores)
         char nombre[20];
         printf("Ingrese nombre del jugador %d: ", i + 1);
         scanf("%s", nombre); 
-        printf("a");
         strcpy(jugador->nombre, nombre);
 
         jugador->puntos = 0;
@@ -76,29 +75,55 @@ void piramide(Map *jugadores)
             jugador->cartas[j] = stack_pop(pila1);
         }
 
+        printf("Entregando cartas...\n");
+        sleep(1);
         insertMap(jugadores, jugador->nombre, jugador);
 
     }
-
-    for (int i = 1; i <= 7; i++) 
+    
+    for (int i = 0; i < 7; i++) 
     {
-       for (int j = 1; j <= 7 - i; j++) 
-       {
-           printf(" ");
-       }
-       for (int k = 1; k <= 2 * i - 1; k++) 
-       {
-           if (i == 1) printf("**");
-           else
-               printf("*");
-       }
-       printf("\n");
+
+        for (int j = 0; j < 7 - i - 1; j++) 
+        {
+            printf(" ");
+        }
+        
+        if (i == 0) 
+        {
+            printf("* \n");
+            for (int j = 0; j < 7 - i - 1; j++) 
+        {
+            printf(" ");
+        }
+        }
+
+        for (int k = 0; k < i + 1; k++) 
+        {
+            printf("* ");
+        }
+        
+        printf("\n");
     }
     
 
-    printf("\n");
-    printf("Entregando cartas...");
 
+
+    printf("\n");
+
+    jugadorPiramide *jugador = firstMap(jugadores);
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        printf("Jugador: %s\n", jugador->nombre);
+        printf("Puntos: %d\n", jugador->puntos);
+        printf("Cartas: ");
+        for (int j = 0; j < 3; j++)
+        {
+            printf("%d de %u - ", jugador->cartas[j]->numero, (Palo)jugador->cartas[j]->palo);
+        }
+        printf("\n");
+        jugador = nextMap(jugadores);
+    }
 }
 
 int main()
