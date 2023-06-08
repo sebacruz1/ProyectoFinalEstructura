@@ -43,39 +43,20 @@ void mostrarJugadores(Map *jugadores, int cantidadJugadores)
                 switch (jugador->cartas[j]->numero)
                 {
                 case 1:
-                    printf("A de");
+                    printf("A");
                     break;
                 case 11:
-                    printf("J de");
+                    printf("J");
                     break;
                 case 12:
-                    printf("Q de");
+                    printf("Q");
                     break;
                 case 13:
-                    printf("K de");
+                    printf("K");
                     break;
 
                 default:
-                    printf("%d de", jugador->cartas[j]->numero);
-                    break;
-                }
-
-
-                switch (jugador->cartas[j]->palo)
-                {
-                case Pica:
-                    printf(" Picas ");
-                    break;
-                case Corazon:
-                    printf(" Corazones");
-                    break;
-                case Diamante:
-                    printf(" Diamantes");
-                    break;
-                case Trebol:
-                    printf(" Treboles");
-                    break;
-                default:
+                    printf("%d", jugador->cartas[j]->numero);
                     break;
                 }
 
@@ -156,18 +137,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
         for (int k = 0; k < i + 1; k++) 
         {
-            if (k == ultimaCarta)
-            {
-                printf("%d ", carta[k]->numero);
-                printf("%d ", carta[k]->palo);
-                for (int z = k; z < 30; z++)
-                {
-                    printf("%d ", carta[z]->numero);
-                }
-                ultimaCarta--;
-            }
-            else
-                printf("* ");
+            printf("* ");
         }
         
         printf("\n");

@@ -69,7 +69,6 @@ void barajar (Baraja baraja)
 
       intercambiar( &(baraja[c1]), &(baraja[c2]) );
   }
-
 }
 
 void stackCartas(Baraja baraja, Stack *pila)
