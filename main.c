@@ -4,6 +4,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <windows.h>
+#include <conio.h>
 #include "Map.h"
 #include "cartas.h"
 #include "menu.h"
@@ -26,6 +27,11 @@ typedef struct
     int puntos;
     Carta *cartas[3];
 } jugadorPiramide;
+
+void gotoxy(int x, int y) 
+{
+    printf("\033[%d;%df", y, x);
+}
 
 void tomanji(Map *jugadores)
 {
@@ -80,12 +86,14 @@ void mostrarJugadores(Map *jugadores, int cantidadJugadores)
 
 void mostrarPiramide()
 {
+    int base = 7; 
     int espacios, i, j, k;
+    int pantalla_ancho = 80;
 
-    for (i = 1; i <= 7; i += 2) 
+    espacios = (pantalla_ancho - 7) / 2;
+
+    for (i = 1; i <= base; i += 2) 
     {
-        espacios = (7 - i) / 2;
-
         for (j = 0; j < espacios; j++) 
         {
             printf(" ");
@@ -97,6 +105,7 @@ void mostrarPiramide()
         }
 
         printf("\n");
+        espacios--;
     }
 }
 
@@ -113,12 +122,14 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         carta[i] = stack_pop(pila);
     }
     
+    int base = 7; 
     int espacios, i, j, k;
+    int pantalla_ancho = 80;
 
-    for (i = 1; i <= 7; i += 2) 
+    espacios = (pantalla_ancho - 7) / 2;
+
+    for (i = 1; i <= base; i += 2) 
     {
-        espacios = (7 - i) / 2;
-
         for (j = 0; j < espacios; j++) 
         {
             printf(" ");
@@ -130,9 +141,9 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         }
 
         printf("\n");
+        espacios--;
     }
-    
-
+    sleep(3);
 }
 
 void piramide(Map *jugadores)
@@ -207,7 +218,6 @@ void piramide(Map *jugadores)
     printf("Revelando primera carta:\n");
     sleep(1);
     system("cls");
-
     juegoPiramide(jugadores, cantidadJugadores, pila2);
 }
 
