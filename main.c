@@ -28,14 +28,80 @@ typedef struct
     Carta *cartas[3];
 } jugadorPiramide;
 
-void gotoxy(int x, int y) 
+typedef struct {
+    char nombreTomanji[20];
+    int cantSorbos;
+} jugadorTomanji;
+
+void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
 {
-    printf("\033[%d;%df", y, x);
+    printf("\n\n");
+    printf(LINEA);
+    printf("\n");
+
+    jugadorTomanji *jugador = firstMap(jugadores);
+    {
+        for (int i =0 ; i < cantidadJugadores; i++)
+        {
+            printf("Jugador: %s\n", jugador->nombreTomanji);
+            
+            printf("\n\n");
+            printf(LINEA);
+            printf("\n");
+
+            jugador = nextMap(jugadores);
+        }
+    }
 }
 
 void tomanji(Map *jugadores)
 {
+    system("cls");
+    printf(LINEA);
+    printf("|   Bienvenido a Tomaji.        |\n");
+    printf(LINEA);
+    printf("Cuantos jugadores van a jugar?\n");
+    int cantidadJugadores = 0;
+    scanf("%d", &cantidadJugadores);
+    getchar();
+    if (cantidadJugadores < 0 || cantidadJugadores > 15)
+    {
+        printf("Cantidad de jugadores invalida.\n");
+        exit(0);
+    }
 
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        jugadorTomanji *jugador= (jugadorTomanji *)malloc(sizeof(jugadorTomanji));
+
+        if (jugador == NULL)
+        {
+            printf("No se pudo asignar memoria.\n");
+            exit(0);
+        }
+
+        char nombre[20];
+        printf("Ingrese nombre del jugador %d: ", i + 1);
+        scanf("%s", nombre); 
+        strcpy(jugador->nombreTomanji, nombre);
+
+        jugador->cantSorbos = 0;
+        
+        sleep(1);
+        insertMap(jugadores, jugador->nombreTomanji, jugador);
+
+    }
+
+    mostrarJugadoresTomaji(jugadores, cantidadJugadores);
+    fflush(stdin);
+    printf("Presione ENTER para comenzar el juego!!\n");
+    getchar();
+
+}
+
+void gotoxy(int x, int y) 
+{
+    printf("\033[%d;%df", y, x);
 }
 
 void mostrarJugadores(Map *jugadores, int cantidadJugadores)
