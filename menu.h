@@ -65,7 +65,7 @@ void subrutina(){
 
 /*La función es un prototipo de menu interactivo. Puede recibir
 * las propiedades del juego para cambiar las características*/
-void menu(){
+int menu(){
     int opcion = 0;
     while(true){
         GetAllKeys();
@@ -78,9 +78,10 @@ void menu(){
         gotoxy(10, 10); printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         gotoxy(10, 11); printf("|        MENU PRINCIPAL      |");
         gotoxy(10, 12); printf("|                            |");
-        gotoxy(10, 13); printf("|              JUEGO         |");
-        gotoxy(10, 14); printf("|              MENSAJE       |");
+        gotoxy(10, 13); printf("|              TOMANJI       |");
+        gotoxy(10, 14); printf("|              PIRAMIDE      |");
         gotoxy(10, 15); printf("|              SALIR         |");
+        
         gotoxy(10, 16); printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         //Toda la lógica de como borrar y pintar la flecha
@@ -93,31 +94,14 @@ void menu(){
 
         switch (opcion)
         {
-        case 0: 
-            return; //Salir del menu
+        case 0:
+             return 1;
         case 1:
-            subrutina();
-            break; //Realizar subrutinas dentro del mismo menu
-        case 2: 
+            return 2;
+            break;
+        case 2:
+            printf("Saliendo!"); 
             exit(0); //Salir del programa
         } 
     }
-
-}
-
-int main(){
-    //Resetea la lectura de teclas
-    GetAllKeys();
-    ocultarCursor();
-
-    //Menu Principal
-    menu();
-
-    //Las decisiones del usuario en los menús generarán las propiedasdes 
-    //del juego, donde se deberían ingresar como parámetros. En este  
-    //caso, el juego no utiliza ninguna, ya que solo sirve de ejemplo 
-    game();
-
-
-    return 0;
 }

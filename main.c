@@ -3,8 +3,11 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
+#include <windows.h>
 #include "Map.h"
 #include "cartas.h"
+#include "menu.h"
+#include "gotoxy.h"
 
 #define LINEA "----------------------------------\n"
 
@@ -77,32 +80,24 @@ void mostrarJugadores(Map *jugadores, int cantidadJugadores)
 
 void mostrarPiramide()
 {
-    for (int i = 0; i < 7; i++) 
-    {
+    int espacios, i, j, k;
 
-        for (int j = 0; j < 7 - i - 1; j++) 
+    for (i = 1; i <= 7; i += 2) 
+    {
+        espacios = (7 - i) / 2;
+
+        for (j = 0; j < espacios; j++) 
         {
             printf(" ");
         }
-        
-        if (i == 0) 
+
+        for (k = 0; k < i; k++) 
         {
-            printf("* \n");
-            for (int j = 0; j < 7 - i - 1; j++) 
-            {
-                printf(" ");
-            }
+            printf("*");
         }
 
-        for (int k = 0; k < i + 1; k++) 
-        {
-            printf("* ");
-        }
-        
         printf("\n");
     }
-    
-    printf("\n");
 }
 
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
@@ -118,28 +113,22 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         carta[i] = stack_pop(pila);
     }
     
-    for (int i = 0; i < 7; i++) 
-    {
+    int espacios, i, j, k;
 
-        for (int j = 0; j < 7 - i - 1; j++) 
+    for (i = 1; i <= 7; i += 2) 
+    {
+        espacios = (7 - i) / 2;
+
+        for (j = 0; j < espacios; j++) 
         {
             printf(" ");
         }
-        
-        if (i == 0) 
+
+        for (k = 0; k < i; k++) 
         {
-            printf("* \n");
-            for (int j = 0; j < 7 - i - 1; j++) 
-            {
-                printf(" ");
-            }
+            printf("*");
         }
 
-        for (int k = 0; k < i + 1; k++) 
-        {
-            printf("* ");
-        }
-        
         printf("\n");
     }
     
@@ -155,7 +144,7 @@ void piramide(Map *jugadores)
     crearPila(pila1);
     crearPila(pila2);
 
-    printf("\e[1;1H\e[2J");
+   system("cls");
     printf(LINEA);
     printf("|   Bienvenido a piramide.        |\n");
     printf(LINEA);
@@ -203,7 +192,7 @@ void piramide(Map *jugadores)
 
     }
 
-    printf("\e[1;1H\e[2J");
+    system("cls");
     mostrarPiramide();
 
     printf("\n");
@@ -217,7 +206,7 @@ void piramide(Map *jugadores)
     printf(LINEA);
     printf("Revelando primera carta:\n");
     sleep(1);
-    printf("\e[1;1H\e[2J");
+    system("cls");
 
     juegoPiramide(jugadores, cantidadJugadores, pila2);
 }
@@ -225,50 +214,23 @@ void piramide(Map *jugadores)
 int main()
 {   
     Map *jugadores = createMap(is_equal_string);
-    int opcion;
-    printf(LINEA);
-    printf("|           Bienvenidos!         |\n");
-    printf(LINEA);
-    printf("Que deseas jugar?\n");
-    printf("1. Tomanji\n");
-    printf("2. Piramide\n");
-    printf("0. Salir\n");
+    
+    GetAllKeys();
+    ocultarCursor();
 
-    scanf("%d", &opcion);
+    int opcion = menu();
 
     switch (opcion)
     {
         case 1:
-            for (int i = 0; i < 1; i++)
-            {
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a tomanji.\n");
-                sleep(1);
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a tomanji..\n");
-                sleep(1);
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a tomanji...\n");
-                sleep(1);
-            }
             tomanji(jugadores);
             break;
         case 2:
-            for (int i = 0; i < 1; i++)
-            {
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a piramide.\n");
-                sleep(1);
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a piramide..\n");
-                sleep(1);
-                printf("\e[1;1H\e[2J");
-                printf("Entrando a piramide...\n");
-                sleep(1);
-            }
             piramide(jugadores);
             break;
     }
+        
+
 
     return 0;
 }
