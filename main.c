@@ -99,11 +99,6 @@ void tomanji(Map *jugadores)
 
 }
 
-void gotoxy(int x, int y) 
-{
-    printf("\033[%d;%df", y, x);
-}
-
 void mostrarJugadores(Map *jugadores, int cantidadJugadores)
 {
     jugadorPiramide *jugador = firstMap(jugadores);
@@ -152,65 +147,112 @@ void mostrarJugadores(Map *jugadores, int cantidadJugadores)
 
 void mostrarPiramide()
 {
-    int base = 7; 
-    int espacios, i, j, k;
-    int pantalla_ancho = 80;
+    int base = 1;
+    int altura = 7;
 
-    espacios = (pantalla_ancho - 7) / 2;
+    system("cls"); // Limpiar la pantalla
 
-    for (i = 1; i <= base; i += 2) 
-    {
-        for (j = 0; j < espacios; j++) 
-        {
-            printf(" ");
-        }
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    int consoleWidth = csbi.dwSize.X;
 
-        for (k = 0; k < i; k++) 
-        {
+    int i, j;
+    for (i = 0; i < altura; i++) {
+        int espacios = (consoleWidth - base) / 2;
+        gotoxy(espacios, i + 1);
+        for (j = 0; j < base; j++) {
             printf("*");
         }
-
-        printf("\n");
-        espacios--;
+        base += 2;
     }
+
+    gotoxy(0, altura + 2);
+
 }
 
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 {
-    Carta *carta[30];
-        
-    int ultimaCarta = 29;
+    Carta *carta[48];
+    int ultimaCarta = 48;
 
-    
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 48; i++)
     {
-        carta[i] = malloc(sizeof(Carta));
         carta[i] = stack_pop(pila);
     }
-    
-    int base = 7; 
-    int espacios, i, j, k;
-    int pantalla_ancho = 80;
 
-    espacios = (pantalla_ancho - 7) / 2;
+    int base = 1;
+    int altura = 4; // Reducir la altura de la pirámide
 
-    for (i = 1; i <= base; i += 2) 
+    system("cls"); // Limpiar la pantalla
+
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+
+    int contador = 0;
+    int i, j;
+    bool game = true;
+
+    while (game)
     {
-        for (j = 0; j < espacios; j++) 
+        int base = 1;
+        int altura = 7;
+
+        system("cls"); // Limpiar la pantalla
+
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        int consoleWidth = csbi.dwSize.X;
+
+        int i, j;
+        int cont = 0;
+        int numero = 0;
+        for (i = 0; i < altura; i++) 
         {
-            printf(" ");
+            int espacios = (consoleWidth - base) / 2;
+            gotoxy(espacios, i + 1);
+            for (j = 0; j < base; j++) 
+            {
+                if (cont >= ultimaCarta)
+                {
+                    printf("%d", carta[numero]->numero);
+                    numero++;
+                    cont = 0;
+                    ultimaCarta--;
+
+                }
+                else
+                {
+                    printf("*");
+                    cont++;
+                }
+
+                numero = ultimaCarta - 1;
+                
+            }
+            base += 2;
         }
 
-        for (k = 0; k < i; k++) 
+        gotoxy(0, altura + 2);
+
+        fflush(stdin);
+        printf("\n\n");
+        printf("Presione enter para continuar.\n");
+        getchar();
+
+        system("cls");
+
+        if (ultimaCarta == 0)
         {
-            printf("*");
+            game = false;
         }
 
-        printf("\n");
-        espacios--;
     }
-    sleep(3);
+
+    gotoxy(0, csbi.dwCursorPosition.Y + 2);
+    Sleep(3000);
 }
+
 
 void piramide(Map *jugadores)
 {

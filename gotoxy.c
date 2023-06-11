@@ -17,6 +17,15 @@ void ocultarCursor(){
     SetConsoleCursorInfo( consola, &cursInfo);
 }
 
+void gotoxy(int x, int y) 
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
 //*Función propuesta*
 //Obtiene todas las teclas que se utilizan en el juego
 void GetAllKeys(){
