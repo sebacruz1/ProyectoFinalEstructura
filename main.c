@@ -173,7 +173,7 @@ void mostrarPiramide()
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 {
     Carta *carta[48];
-    Carta *cartaAux[48];
+    Carta *cartaAux[48] = {NULL};
     int ultimaCarta = 48;
 
     for (int i = 0; i < 48; i++)
@@ -216,12 +216,12 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                 {
                     printf(" %d", carta[numero]->numero);
                     cartaAux[numerosImpresos] = carta[numero];
-                    
                     if (numerosImpresos >= 0)
                     {
                         for (int k = numerosImpresos - 1; k >= 0; k--)
                         {   
-                            if (k % 13 == 0)
+
+                            if (cartaAux[k]->numero % 13 == 0)
                             {
                                 printf("\n");
                                 gotoxy(espacios, i + 1);
@@ -229,6 +229,11 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
                             printf(" %d", cartaAux[k]->numero);
                             
+                            if (cartaAux[k]->numero % 13 == 0)
+                            {
+                                printf("\n");
+                                gotoxy(espacios, i + 1);
+                            }
                         }
                     }
                     
