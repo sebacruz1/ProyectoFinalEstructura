@@ -173,6 +173,7 @@ void mostrarPiramide()
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 {
     Carta *carta[48];
+    Carta *cartaAux[48];
     int ultimaCarta = 48;
 
     for (int i = 0; i < 48; i++)
@@ -180,46 +181,65 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         carta[i] = stack_pop(pila);
     }
 
-    int base = 1;
-    int altura = 4; // Reducir la altura de la pirámide
-
-    system("cls"); // Limpiar la pantalla
+    system("cls");
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 
-    int contador = 0;
     int i, j;
     bool game = true;
+    int numerosImpresos = 0;
 
     while (game)
     {
         int base = 1;
         int altura = 7;
 
-        system("cls"); // Limpiar la pantalla
+        system("cls");
 
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
         int consoleWidth = csbi.dwSize.X;
-
+        
         int i, j;
         int cont = 0;
         int numero = 0;
         for (i = 0; i < altura; i++) 
         {
             int espacios = (consoleWidth - base) / 2;
+
             gotoxy(espacios, i + 1);
             for (j = 0; j < base; j++) 
             {
                 if (cont >= ultimaCarta)
                 {
-                    printf("%d", carta[numero]->numero);
-                    numero++;
-                    cont = 0;
-                    ultimaCarta--;
+                    printf(" %d", carta[numero]->numero);
+                    cartaAux[numerosImpresos] = carta[numero];
+                    
+                    if (numerosImpresos >= 0)
+                    {
+                        for (int k = numerosImpresos - 1; k >= 0; k--)
+                        {   
+                            if (k % 13 == 0)
+                            {
+                                printf("\n");
+                                gotoxy(espacios, i + 1);
+                            }
 
+                            printf(" %d", cartaAux[k]->numero);
+                            
+                        }
+                    }
+                    
+                    numerosImpresos++;
+
+                    if (numero <= ultimaCarta)
+                    {
+                        ultimaCarta--;
+                        cont = 0;
+                    }
+                    numero++;
                 }
                 else
                 {
