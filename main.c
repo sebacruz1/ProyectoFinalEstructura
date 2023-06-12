@@ -239,7 +239,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                     
                     numerosImpresos++;
 
-                    if (numero <= ultimaCarta)
+                    if (numero < ultimaCarta)
                     {
                         ultimaCarta--;
                         cont = 0;
