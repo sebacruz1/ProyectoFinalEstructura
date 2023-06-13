@@ -95,7 +95,7 @@ void tomanji(Map *jugadores)
     mostrarJugadoresTomaji(jugadores, cantidadJugadores);
     fflush(stdin);
     printf("Presione ENTER para comenzar el juego!!\n");
-    getchar();
+    system("pause");
 
 }
 
@@ -263,7 +263,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         fflush(stdin);
         printf("\n\n");
         printf("Presione enter para continuar.\n");
-        getchar();
+        system("pause");
 
         system("cls");
 
@@ -345,7 +345,7 @@ void piramide(Map *jugadores)
     mostrarJugadores(jugadores, cantidadJugadores);
     fflush(stdin);
     printf("Presione enter para continuar.\n");
-    getchar();
+    system("pause");
 
     printf(LINEA);
     printf("Revelando primera carta:\n");
