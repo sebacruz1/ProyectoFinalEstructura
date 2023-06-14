@@ -3,43 +3,47 @@
 #include <stdbool.h>
 #include "gotoxy.h"
 
-void limpiarFlecha(int x, int y, int cantOpciones){
+void limpiarFlecha(int x, int y, int cantOpciones)
+{
     for(int i = 0; i < cantOpciones; i++){
         gotoxy(x, y + i); 
         printf("   ");
     }
 }
 
-void formatearOpcion(int* opcion, int cantOpciones){
+void formatearOpcion(int* opcion, int cantOpciones)
+{
     *opcion = *opcion % 3;
     if(*opcion < 0) *opcion = 3 + *opcion;
 }
 
-void ubicarFlecha(int x, int y, int opcion){
+void ubicarFlecha(int x, int y, int opcion)
+{
     gotoxy(x, y + opcion);
     printf("-->");
 }
 
-bool cambiarOpcion(int * opcion){
+bool cambiarOpcion(int * opcion)
+{
     Sleep(250);
-    if( GetAsyncKeyState(VK_UP) ){
+    if( GetAsyncKeyState(VK_UP) )
+    {
         *opcion -= 1;
     }
-    if( GetAsyncKeyState(VK_DOWN) ){
+   
+    if ( GetAsyncKeyState(VK_DOWN) )
+    {
         *opcion += 1;
     }
-    if( GetAsyncKeyState(VK_RETURN) ){
+    if ( GetAsyncKeyState(VK_RETURN) )
+    {
         return true;
     }
     return false;
 }
-//------------------------------------------------------------------------------------------
 
-/*La función muestra de ejemplo una subrutina dentro del menu.
-* Luego de ejecutarse se regresa al menu, estas subrutinas pueden ser
-* para cambiar de color la pantalla, mostrar highscores, instrucciones
-* o hasta ejecutar sub-menus*/
-void subrutina(){
+void subrutina()
+{
     GetAllKeys();
     system("cls");
     gotoxy(10, 10); printf("Ejemplo de subrutina que se puede");
@@ -47,9 +51,9 @@ void subrutina(){
     gotoxy(10, 12); system("pause");
 }
 
-/*La función es un prototipo de menu interactivo. Puede recibir
-* las propiedades del juego para cambiar las características*/
-int menu(){
+
+int menu()
+{
     int opcion = 0;
 
     printf("BIENVENIDOS A \n\n\n");

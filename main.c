@@ -44,6 +44,7 @@ void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
         for (int i =0 ; i < cantidadJugadores; i++)
         {
             printf("Jugador: %s\n", jugador->nombreTomanji);
+            printf("Sorbos: %d\n", jugador->cantSorbos);
             
             printf("\n\n");
             printf(LINEA);
@@ -150,17 +151,19 @@ void mostrarPiramide()
     int base = 1;
     int altura = 7;
 
-    system("cls"); // Limpiar la pantalla
+    system("cls");
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     int consoleWidth = csbi.dwSize.X;
 
     int i, j;
-    for (i = 0; i < altura; i++) {
+    for (i = 0; i < altura; i++) 
+    {
         int espacios = (consoleWidth - base) / 2;
         gotoxy(espacios, i + 1);
-        for (j = 0; j < base; j++) {
+        for (j = 0; j < base; j++) 
+        {
             printf("*");
         }
         base += 2;
@@ -194,6 +197,8 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
     while (game)
     {
         int base = 1;
+        int pos = 0;
+        bool flag = false;
         int altura = 7;
 
         system("cls");
@@ -205,11 +210,14 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         int i, j;
         int cont = 0;
         int numero = 0;
+
         for (i = 0; i < altura; i++) 
         {
             int espacios = (consoleWidth - base) / 2;
-
+            
             gotoxy(espacios, i + 1);
+            if (i > 1)
+                gotoxy(espacios, i + 1);
             for (j = 0; j < base; j++) 
             {
                 if (cont >= ultimaCarta)
@@ -218,20 +226,26 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                     {
                         case 1:
                             printf(" A");
+                            pos++;
                             break;
                         case 11:
                             printf(" J");
+                            pos++;
                             break;
                         case 12:
                             printf(" Q");
+                            pos++;
                             break;
                         case 13:
                             printf(" K");
+                            pos++;
                             break;
                         default:
                             printf(" %d", carta[numero]->numero);
+                            pos++;
                             break;
                     }
+                    flag = true;
 
                     cartaAux[numerosImpresos] = carta[numero];
                     
@@ -240,34 +254,34 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                         for (int k = numerosImpresos - 1; k >= 0; k--)
                         {   
 
-                            if (cartaAux[k]->numero % 13 == 0)
-                            {
-                                printf("\n");
-                                gotoxy(espacios, i + 1);
-                            }
-
                             switch (cartaAux[k]->numero)
                             {
                                 case 1:
                                     printf(" A");
+                                    pos++;
                                     break;
                                 case 11:
                                     printf(" J");
+                                    pos++;
                                     break;
                                 case 12:
                                     printf(" Q");
+                                    pos++;
                                     break;
                                 case 13:
                                     printf(" K");
+                                    pos++;
                                     break;
                                 case 14: 
                                     printf(" A");
+                                    pos++;
                                     break;
                                 default:
                                     printf(" %d", cartaAux[k]->numero);
+                                    pos++;
                                     break;
                             }
-                            if (cartaAux[k]->numero % 13 == 0)
+                            if (pos % 13 == 0)
                             {
                                 printf("\n");
                                 gotoxy(espacios, i + 1);
@@ -284,14 +298,13 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                     }
                     numero++;
                 }
-                else
+                else if (flag == false)
                 {
                     printf("*");
+                    pos++;
                     cont++;
                 }
-
                 numero = ultimaCarta - 1;
-                
             }
             base += 2;
         }
@@ -326,7 +339,7 @@ void piramide(Map *jugadores)
     crearPila(pila1);
     crearPila(pila2);
 
-   system("cls");
+    system("cls");
     printf(LINEA);
     printf("|   Bienvenido a piramide.        |\n");
     printf(LINEA);
