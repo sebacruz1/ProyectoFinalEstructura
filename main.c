@@ -214,8 +214,27 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
             {
                 if (cont >= ultimaCarta)
                 {
-                    printf(" %d", carta[numero]->numero);
+                    switch (carta[numero]->numero)
+                    {
+                        case 1:
+                            printf(" A");
+                            break;
+                        case 11:
+                            printf(" J");
+                            break;
+                        case 12:
+                            printf(" Q");
+                            break;
+                        case 13:
+                            printf(" K");
+                            break;
+                        default:
+                            printf(" %d", carta[numero]->numero);
+                            break;
+                    }
+
                     cartaAux[numerosImpresos] = carta[numero];
+                    
                     if (numerosImpresos >= 0)
                     {
                         for (int k = numerosImpresos - 1; k >= 0; k--)
@@ -227,8 +246,27 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                                 gotoxy(espacios, i + 1);
                             }
 
-                            printf(" %d", cartaAux[k]->numero);
-                            
+                            switch (cartaAux[k]->numero)
+                            {
+                                case 1:
+                                    printf(" A");
+                                    break;
+                                case 11:
+                                    printf(" J");
+                                    break;
+                                case 12:
+                                    printf(" Q");
+                                    break;
+                                case 13:
+                                    printf(" K");
+                                    break;
+                                case 14: 
+                                    printf(" A");
+                                    break;
+                                default:
+                                    printf(" %d", cartaAux[k]->numero);
+                                    break;
+                            }
                             if (cartaAux[k]->numero % 13 == 0)
                             {
                                 printf("\n");

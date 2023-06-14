@@ -9,7 +9,7 @@
 /* ---------------- */
 
 #define PALOS 4
-#define NUMEROS 14
+#define NUMEROS 13
 #define CARTAS (NUMEROS*PALOS)
 
 typedef enum Palo 
