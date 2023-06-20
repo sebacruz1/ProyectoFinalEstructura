@@ -12,6 +12,46 @@
 
 #define LINEA "----------------------------------\n"
 
+const char *get_csv_field (char * tmp, int k) {
+    int open_mark = 0;
+    char* ret=(char*) malloc (100*sizeof(char));
+    int ini_i=0, i=0;
+    int j=0;
+    while(tmp[i+1]!='\0'){
+
+        if(tmp[i]== '\"'){
+            open_mark = 1-open_mark;
+            if(open_mark) ini_i = i+1;
+            i++;
+            continue;
+        }
+
+        if(open_mark || tmp[i]!= ';'){
+            if(k==j) ret[i-ini_i] = tmp[i];
+            i++;
+            continue;
+        }
+
+        if(tmp[i]== ';'){
+            if(k==j) {
+               ret[i-ini_i] = 0;
+               return ret;
+            }
+            j++; ini_i = i+1;
+        }
+
+        i++;
+    }
+
+    if(k==j) {
+       ret[i-ini_i] = 0;
+       return ret;
+    }
+
+
+    return NULL;
+}
+
 int is_equal_string(void *key1, void *key2)
 {
     if (strcmp((char *)key1, (char *)key2) == 0)
@@ -33,6 +73,13 @@ typedef struct {
     int cantSorbos;
 } jugadorTomanji;
 
+typedef struct {
+    char tituloTomanji[1000];
+    char retoTomanji[1000];
+    int tragos;
+    int repetido;
+} retoTomanji;
+
 void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
 {
     printf("\n\n");
@@ -53,6 +100,58 @@ void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
             jugador = nextMap(jugadores);
         }
     }
+}
+
+void importarRetosTomanji()
+{
+    retoTomanji arregloDeRetos[50];
+    //retoTomanji retoAux;
+
+    FILE *fp = fopen ("retos.csv", "r");
+
+    char linea[1024];
+    int i;
+    int tragos;
+
+    fgets (linea, 1023, fp);
+    int k=0;
+    while (fgets (linea, 1023, fp) != NULL) {
+        for(i=0; i<3; i++){
+            const char *aux = get_csv_field(linea, i); 
+            
+            switch(i)
+            {
+                case 0: 
+                    //printf("TITULO: %s", aux);
+                    strcpy(arregloDeRetos[k].tituloTomanji, aux);
+                    break;
+                case 1: 
+                    //printf("RETO: %s", aux);
+                    strcpy(arregloDeRetos[k].retoTomanji, aux);
+                    break;
+                case 2: 
+                    //printf("TRAGOS: %s", aux);
+                    tragos = (int) strtol(aux, NULL, 10);
+                    arregloDeRetos[k].tragos = tragos;
+                    break;
+            }
+            printf("\n");
+        }
+        arregloDeRetos[k].repetido = 0;
+        printf("\n");
+        k++; if(k==50) break;
+    }
+
+    /*for(k = 0 ; k < 49 ; k++)
+    {
+        printf("%s\n", arregloDeRetos[k].tituloTomanji);
+        printf("%s\n", arregloDeRetos[k].retoTomanji);
+        printf("%d\n", arregloDeRetos[k].tragos);
+        printf("\n");
+    }*/
+
+    return ;
+
 }
 
 void tomanji(Map *jugadores)
@@ -97,6 +196,7 @@ void tomanji(Map *jugadores)
     fflush(stdin);
     printf("Presione ENTER para comenzar el juego!!\n");
     system("pause");
+    importarRetosTomanji();
 
 }
 
