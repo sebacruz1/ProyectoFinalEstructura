@@ -147,3 +147,22 @@ void cleanList(List * list) {
         popFront(list);
     }
 }
+
+void SortLinkedList(List *list) {
+    Node *node = NULL, *temp = NULL;
+    int tempvar;
+
+    node = list->head;
+    while (node != NULL) {
+        temp = node;
+        while (temp->next != NULL) {
+            if (*(int *)(temp->data) > *(int *)(temp->next->data)) {
+                tempvar = *(int *)(temp->data);
+                *(int *)(temp->data) = *(int *)(temp->next->data);
+                *(int *)(temp->next->data) = tempvar;
+            }
+            temp = temp->next;
+        }
+        node = node->next;
+    }
+}

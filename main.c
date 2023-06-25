@@ -102,20 +102,21 @@ void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
     }
 }
 
-void importarRetosTomanji()
+List *importarRetosTomanji()
 {
     retoTomanji arregloDeRetos[50];
     //retoTomanji retoAux;
-    Map *retos = createMap(is_equal_string);
+    List *retos = createList();
     FILE *fp = fopen ("retos.csv", "r");
 
     char linea[1024];
     int i;
     int tragos;
 
-    fgets (linea, 1023, fp);
+    fgets(linea, 1023, fp);
     int k=0;
-    while (fgets (linea, 1023, fp) != NULL) {
+    while (fgets (linea, 1023, fp) != NULL) 
+    {
         for(i=0; i<3; i++){
             const char *aux = get_csv_field(linea, i); 
             
@@ -139,7 +140,15 @@ void importarRetosTomanji()
         }
 
         arregloDeRetos[k].repetido = false;
-        insertMap(retos, arregloDeRetos[k].tituloTomanji, &arregloDeRetos[k]);
+        int random = rand() % 50;
+        if (random % 2 == 0)
+        {
+            pushFront(retos, &arregloDeRetos[k]);
+        }
+        else
+        {
+            pushBack(retos, &arregloDeRetos[k]);
+        }
         printf("\n");
         k++; if(k==50) break;
     }
@@ -151,20 +160,32 @@ void importarRetosTomanji()
         printf("%d\n", arregloDeRetos[k].tragos);
         printf("\n");
     }*/
+    printf("Se importaron los retos\n");
+    fclose(fp);
+    sleep(2);
+    SortLinkedList(retos);
+    return retos;
 }
 
-void mostrarRetosTomanji(Map *retos)
+void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
 {
-
-    retoTomanji *reto = firstMap(retos);
-    for (int i =0 ; i < 50; i++)
+    bool game = true;
+    int cont = 0;
+    retoTomanji *reto = firstList(retos);
+    while (game == true)
     {
+        if (cont == 50)
+        {
+            printf("Se acabaron los retos\n");
+            return;
+        }
+
         if (reto->repetido == 1)
         {
-            reto = nextMap(retos);
+            reto = nextList(retos);
             continue;
         }
-        if (i % 15)
+        if (cont % 15)
         {
             printf("Desean Continuar? (S/N)\n");
             char respuesta;
@@ -177,15 +198,20 @@ void mostrarRetosTomanji(Map *retos)
 
         }
 
-        printf("Titulo: %s\n", reto->tituloTomanji);
-        printf("Reto: %s\n", reto->retoTomanji);
+        system("cls");
+        printf(LINEA);
+        system("color 04");
+        gotoxy(10, 10); ("Titulo: %s\n", reto->tituloTomanji);
+        printf("\n");
+        system("color");
+        gotoxy(10, 11); ("Reto: %s\n", reto->retoTomanji);
         printf("Tragos: %d\n", reto->tragos);
         reto->repetido = true;
         
         system("pause");
         system("cls");
         
-        reto = nextMap(retos);
+        reto = nextList(retos);
     }
 }
 
@@ -222,7 +248,6 @@ void tomanji(Map *jugadores)
 
         jugador->cantSorbos = 0;
         
-        sleep(1);
         insertMap(jugadores, jugador->nombreTomanji, jugador);
 
     }
@@ -231,9 +256,9 @@ void tomanji(Map *jugadores)
     fflush(stdin);
     printf("Presione ENTER para comenzar el juego!!\n");
     system("pause");
-    importarRetosTomanji();
+    List *retos = importarRetosTomanji();
     system("cls");
-    tomanjiReto(jugadores, cantidadJugadores);
+    tomanjiRetos(retos, jugadores, cantidadJugadores);
 }
 
 void mostrarJugadores(Map *jugadores, int cantidadJugadores)

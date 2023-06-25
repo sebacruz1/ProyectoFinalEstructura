@@ -27,5 +27,7 @@ void * popCurrent(List * list);
 
 void cleanList(List * list);
 
+void SortLinkedList(List *list);
+
 #endif /* List_h */
 
