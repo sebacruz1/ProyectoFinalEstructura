@@ -423,12 +423,15 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         for (i = 0; i < altura; i++) 
         {
             int espacios = (consoleWidth - base) / 2;
+            int yAxis = i;
+            gotoxy(espacios, i);
             
-            gotoxy(espacios, i + 1);
-            if (i > 1)
-                gotoxy(espacios, i + 1);
+            // gotoxy(espacios, i + 1);
+            // if (i > 1)
+            //     gotoxy(espacios, i + 1);
             for (j = 0; j < base; j++) 
             {
+                if (j )
                 if (cont >= ultimaCarta)
                 {
                     switch (carta[numero]->numero)
@@ -490,11 +493,6 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                                     pos++;
                                     break;
                             }
-                            if (pos % 13 == 0)
-                            {
-                                printf("\n");
-                                gotoxy(espacios, i + 1);
-                            }
                         }
                     }
                     
@@ -517,8 +515,6 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
             }
             base += 2;
         }
-
-        gotoxy(0, altura + 2);
 
         fflush(stdin);
         printf("\n\n");
