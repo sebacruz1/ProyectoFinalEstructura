@@ -3,12 +3,25 @@
 #include <stdbool.h>
 #include "gotoxy.h"
 
+#define FOREGROUND_DARK_BLUE  FOREGROUND_BLUE | FOREGROUND_INTENSITY
+#define FOREGROUND_YELLOW     FOREGROUND_RED | FOREGROUND_GREEN
+#define FOREGROUND_CYAN    FOREGROUND_GREEN | FOREGROUND_BLUE
+
+
 void limpiarFlecha(int x, int y, int cantOpciones)
 {
     for(int i = 0; i < cantOpciones; i++){
         gotoxy(x, y + i); 
         printf("   ");
     }
+}
+
+void setConsoleColor(WORD color) 
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+    GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
+    SetConsoleTextAttribute(hConsole, color);
 }
 
 void formatearOpcion(int* opcion, int cantOpciones)
@@ -56,19 +69,25 @@ int menu()
 {
     int opcion = 0;
 
-    printf("BIENVENIDOS A \n\n\n");
-    printf(" /$$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$   /$$$$$$  /$$$$$$$$  /$$$$$$              /$$\n");      
-    printf("| $$__  $$ /$$__  $$| $$$    /$$$| $$__  $$ /$$__  $$|_____ $$  /$$__  $$            | $$\n");   
-    printf("| $$  \\ $$| $$  \\ $$| $$$$  /$$$$| $$  \\ $$| $$  \\ $$     /$$/ | $$  \\ $$            | $$\n");       
-    printf("| $$$$$$$ | $$  | $$| $$ $$/$$ $$| $$$$$$$ | $$$$$$$$    /$$/  | $$  | $$            | $$\n");                  
-    printf("| $$__  $$| $$  | $$| $$  $$$| $$| $$__  $$| $$__  $$   /$$/   | $$  | $$            |__/\n");      
-    printf("| $$  \\ $$| $$  | $$| $$\\  $ | $$| $$  \\ $$| $$  | $$  /$$/    | $$  | $$\n");                      
-    printf("| $$$$$$$/|  $$$$$$/| $$ \\/  | $$| $$$$$$$/| $$  | $$ /$$$$$$$$|  $$$$$$/             /$$\n");                            
-    printf("|_______/  \\______/ |__/     |__/|_______/ |__/  |__/|________/ \\______/             |__/\n");      
+    gotoxy(10,10);printf("BIENVENIDOS A \n\n\n");
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    gotoxy(10,11);printf(" /$$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$   /$$$$$$  /$$$$$$$$  /$$$$$$              /$$\n");      
+    gotoxy(10,12);printf("| $$__  $$ /$$__  $$| $$$    /$$$| $$__  $$ /$$__  $$|_____ $$  /$$__  $$            | $$\n");   
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+    gotoxy(10,13);printf("| $$  \\ $$| $$  \\ $$| $$$$  /$$$$| $$  \\ $$| $$  \\ $$     /$$/ | $$  \\ $$            | $$\n");       
+    gotoxy(10,14);printf("| $$$$$$$ | $$  | $$| $$ $$/$$ $$| $$$$$$$ | $$$$$$$$    /$$/  | $$  | $$            | $$\n");         
+    setConsoleColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);         
+    gotoxy(10,15);printf("| $$__  $$| $$  | $$| $$  $$$| $$| $$__  $$| $$__  $$   /$$/   | $$  | $$            |__/\n");      
+    gotoxy(10,16);printf("| $$  \\ $$| $$  | $$| $$\\  $ | $$| $$  \\ $$| $$  | $$  /$$/    | $$  | $$\n");                      
+    gotoxy(10,17);printf("| $$$$$$$/|  $$$$$$/| $$ \\/  | $$| $$$$$$$/| $$  | $$ /$$$$$$$$|  $$$$$$/             /$$\n");                            
+    gotoxy(10,18);printf("|_______/  \\______/ |__/     |__/|_______/ |__/  |__/|________/ \\______/             |__/\n"); 
+
+    
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    
+    
                                                                                                                        
-                                                                                               
-
-
+                                                                                    
 
     system("pause");
     
@@ -76,9 +95,8 @@ int menu()
     while(true)
     {
         GetAllKeys();
-
         system("cls");
-
+        setConsoleColor(FOREGROUND_DARK_BLUE);
         gotoxy(10, 10); printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         gotoxy(10, 11); printf("|        MENU PRINCIPAL      |");
         gotoxy(10, 12); printf("|                            |");

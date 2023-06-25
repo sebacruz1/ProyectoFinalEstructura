@@ -58,7 +58,6 @@ const char *get_csv_field(char *tmp, int k) {
     return NULL;
 }
 
-
 int is_equal_string(void *key1, void *key2)
 {
     if (strcmp((char *)key1, (char *)key2) == 0)
@@ -86,6 +85,7 @@ typedef struct {
     int tragos;
     bool repetido;
 } retoTomanji;
+
 
 void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
 {
@@ -127,27 +127,25 @@ List *importarRetosTomanji()
 
     fgets(linea, 1023, fp);
     int k=0;
+    retoTomanji retos;
+
     while (fgets (linea, 1023, fp) != NULL) 
     {
-        printf("Linea: %s\n", linea);
+        retoTomanji *temp = (retoTomanji *)malloc(sizeof(retoTomanji));
         for(i=0; i<3; i++)
         {
-            retoTomanji retos;
             const char *aux = get_csv_field(linea, i); 
             switch(i)
             {
                 case 0: 
-                    printf("TITULO: %s", aux);
-                    strcpy(retos.tituloTomanji, aux);
+                    strcpy(temp->tituloTomanji, aux);
                     break;
                 case 1: 
-                    printf("RETO: %s", aux);
-                    strcpy(retos.retoTomanji, aux);
+                    strcpy(temp->retoTomanji, aux);
                     break;
                 case 2: 
-                    printf("TRAGOS aux: %s\n", aux);
                     tragos = (int) strtol(aux, NULL, 10);
-                    retos.tragos = tragos;
+                    temp->tragos = tragos;
                     break;
                 default: 
                     printf("ERROR\n");
@@ -155,32 +153,29 @@ List *importarRetosTomanji()
             }
             printf("\n");
         }
-        cont++;
-        
-        retoTomanji *newRetos = malloc(sizeof(retoTomanji));
-        if (newRetos == NULL)
-        {
-            printf("No se pudo asignar memoria.\n");
-            exit(1);
+        retoTomanji *newRetos = (retoTomanji *)malloc(sizeof(retoTomanji));
+        if (newRetos == NULL) {
+            printf("Memory allocation error\n");
+            break;
         }
 
-        newRetos->repetido = false;
+        // Copy the data from retos to newRetos
+        strcpy(newRetos->tituloTomanji, temp->tituloTomanji);
+        strcpy(newRetos->retoTomanji, temp->retoTomanji);
+        newRetos->tragos = temp->tragos;
+
         int random = rand() % 50;
-        if (random % 2 == 0)
-        {
+        if (random % 2 == 0) {
             pushFront(listaRetos, newRetos);
-        }
-        else
-        {
+        } else {
             pushBack(listaRetos, newRetos);
         }
         printf("\n");
-        k++; if(k==50) break;
+        k++;
+        if (k == 50) break;
     }
 
-    printf("Se importaron los retos\n");
     fclose(fp);
-    sleep(2);
     SortLinkedList(listaRetos);
     return listaRetos;
 }
@@ -188,8 +183,12 @@ List *importarRetosTomanji()
 void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
 {
     bool game = true;
+    jugadorTomanji *jugador = firstMap(jugadores);
     int cont = 0;
     retoTomanji *reto = firstList(retos);
+    printf("Comenzando el juego...\n");
+    sleep(2);
+    system("cls");
     while (game == true)
     {
         if (cont == 50)
@@ -216,21 +215,51 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
 
         }
 
+        setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         system("cls");
-        printf(LINEA);
-        system("color 04");
-        gotoxy(10, 10); ("Titulo: %s\n", reto->tituloTomanji);
+
+        setConsoleColor(FOREGROUND_YELLOW);
+        gotoxy(10, 2); printf("Jugador: %s\n", jugador->nombreTomanji);
+        gotoxy(10,3); printf("Puntos (Cantidad Tomada): %d\n", jugador->cantSorbos);
+        gotoxy(10,4); printf(LINEA);
+        setConsoleColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+        gotoxy(10, 5); 
+        printf("|Titulo: %s\n", reto->tituloTomanji);
         printf("\n");
-        system("color");
-        gotoxy(10, 11); ("Reto: %s\n", reto->retoTomanji);
-        printf("Tragos: %d\n", reto->tragos);
+        setConsoleColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+        gotoxy(10, 6); 
+        printf("|Reto: %s\n", reto->retoTomanji);
+        setConsoleColor(FOREGROUND_CYAN);
+        gotoxy(10, 7); printf("|Puntos: %d\n", reto->tragos);	
+        setConsoleColor(FOREGROUND_YELLOW);
+        gotoxy(10, 8);printf(LINEA);
+        printf("\n");
         reto->repetido = true;
-        
-        printf("Presione enter para continuar.\n");
+
+        setConsoleColor(FOREGROUND_DARK_BLUE);
+
+        gotoxy(10, 10); 
+        printf("El jugador logro el reto?\n");
+        printf("1. Si\n");
+        printf("2. No\n");
+        int respuesta;
+        scanf("%d", &respuesta);
+        getchar();
+        if (respuesta == 1)
+        {
+            jugador->cantSorbos += reto->tragos;
+        }
+
+        printf("Presione ENTER para continuar.\n");
         system("pause >nul");
         system("cls");
-        
+
         reto = nextList(retos);
+        jugador = nextMap(jugadores);
+        if (jugador == NULL)
+        {
+            jugador = firstMap(jugadores);
+        }
     }
 }
 
