@@ -77,7 +77,7 @@ typedef struct {
     char tituloTomanji[1000];
     char retoTomanji[1000];
     int tragos;
-    int repetido;
+    bool repetido;
 } retoTomanji;
 
 void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
@@ -106,7 +106,7 @@ void importarRetosTomanji()
 {
     retoTomanji arregloDeRetos[50];
     //retoTomanji retoAux;
-
+    Map *retos = createMap(is_equal_string);
     FILE *fp = fopen ("retos.csv", "r");
 
     char linea[1024];
@@ -137,7 +137,9 @@ void importarRetosTomanji()
             }
             printf("\n");
         }
-        arregloDeRetos[k].repetido = 0;
+
+        arregloDeRetos[k].repetido = false;
+        insertMap(retos, arregloDeRetos[k].tituloTomanji, &arregloDeRetos[k]);
         printf("\n");
         k++; if(k==50) break;
     }
@@ -149,9 +151,42 @@ void importarRetosTomanji()
         printf("%d\n", arregloDeRetos[k].tragos);
         printf("\n");
     }*/
+}
 
-    return ;
+void mostrarRetosTomanji(Map *retos)
+{
 
+    retoTomanji *reto = firstMap(retos);
+    for (int i =0 ; i < 50; i++)
+    {
+        if (reto->repetido == 1)
+        {
+            reto = nextMap(retos);
+            continue;
+        }
+        if (i % 15)
+        {
+            printf("Desean Continuar? (S/N)\n");
+            char respuesta;
+            scanf("%c", &respuesta);
+            getchar();
+            if (respuesta == 'N' || respuesta == 'n')
+            {
+                return;
+            }
+
+        }
+
+        printf("Titulo: %s\n", reto->tituloTomanji);
+        printf("Reto: %s\n", reto->retoTomanji);
+        printf("Tragos: %d\n", reto->tragos);
+        reto->repetido = true;
+        
+        system("pause");
+        system("cls");
+        
+        reto = nextMap(retos);
+    }
 }
 
 void tomanji(Map *jugadores)
@@ -177,7 +212,7 @@ void tomanji(Map *jugadores)
         if (jugador == NULL)
         {
             printf("No se pudo asignar memoria.\n");
-            exit(0);
+            exit(1);
         }
 
         char nombre[20];
@@ -197,7 +232,8 @@ void tomanji(Map *jugadores)
     printf("Presione ENTER para comenzar el juego!!\n");
     system("pause");
     importarRetosTomanji();
-
+    system("cls");
+    tomanjiReto(jugadores, cantidadJugadores);
 }
 
 void mostrarJugadores(Map *jugadores, int cantidadJugadores)
