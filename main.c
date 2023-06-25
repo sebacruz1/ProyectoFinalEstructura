@@ -104,10 +104,16 @@ void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
 
 List *importarRetosTomanji()
 {
-    retoTomanji arregloDeRetos[50];
-    //retoTomanji retoAux;
-    List *retos = createList();
+    retoTomanji retos;
+    List *listaRetos = createList();
     FILE *fp = fopen ("retos.csv", "r");
+
+    if (!fp)
+    {
+        printf("No se pudo abrir el archivo\n");
+        exit(1);
+        return NULL;
+    }
 
     char linea[1024];
     int i;
@@ -124,30 +130,30 @@ List *importarRetosTomanji()
             {
                 case 0: 
                     //printf("TITULO: %s", aux);
-                    strcpy(arregloDeRetos[k].tituloTomanji, aux);
+                    strcpy(retos.tituloTomanji, aux);
                     break;
                 case 1: 
                     //printf("RETO: %s", aux);
-                    strcpy(arregloDeRetos[k].retoTomanji, aux);
+                    strcpy(retos.retoTomanji, aux);
                     break;
                 case 2: 
                     //printf("TRAGOS: %s", aux);
                     tragos = (int) strtol(aux, NULL, 10);
-                    arregloDeRetos[k].tragos = tragos;
+                    retos.tragos = tragos;
                     break;
             }
             printf("\n");
         }
 
-        arregloDeRetos[k].repetido = false;
+        retos.repetido = false;
         int random = rand() % 50;
         if (random % 2 == 0)
         {
-            pushFront(retos, &arregloDeRetos[k]);
+            pushFront(listaRetos, retos);
         }
         else
         {
-            pushBack(retos, &arregloDeRetos[k]);
+            pushBack(listaRetos, retos);
         }
         printf("\n");
         k++; if(k==50) break;
@@ -163,8 +169,8 @@ List *importarRetosTomanji()
     printf("Se importaron los retos\n");
     fclose(fp);
     sleep(2);
-    SortLinkedList(retos);
-    return retos;
+    SortLinkedList(listaRetos);
+    return listaRetos;
 }
 
 void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
@@ -208,7 +214,8 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
         printf("Tragos: %d\n", reto->tragos);
         reto->repetido = true;
         
-        system("pause");
+        printf("Presione enter para continuar.\n");
+        system("pause >nul");
         system("cls");
         
         reto = nextList(retos);
@@ -255,7 +262,7 @@ void tomanji(Map *jugadores)
     mostrarJugadoresTomaji(jugadores, cantidadJugadores);
     fflush(stdin);
     printf("Presione ENTER para comenzar el juego!!\n");
-    system("pause");
+    system("pause >nul");
     List *retos = importarRetosTomanji();
     system("cls");
     tomanjiRetos(retos, jugadores, cantidadJugadores);
@@ -475,7 +482,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         fflush(stdin);
         printf("\n\n");
         printf("Presione enter para continuar.\n");
-        system("pause");
+        system("pause >nul");
 
         system("cls");
 
@@ -557,7 +564,7 @@ void piramide(Map *jugadores)
     mostrarJugadores(jugadores, cantidadJugadores);
     fflush(stdin);
     printf("Presione enter para continuar.\n");
-    system("pause");
+    system("pause >nul");
 
     printf(LINEA);
     printf("Revelando primera carta:\n");
