@@ -12,45 +12,52 @@
 
 #define LINEA "----------------------------------\n"
 
-const char *get_csv_field (char * tmp, int k) {
+const char *get_csv_field(char *tmp, int k) {
     int open_mark = 0;
-    char* ret=(char*) malloc (100*sizeof(char));
-    int ini_i=0, i=0;
-    int j=0;
-    while(tmp[i+1]!='\0'){
+    int ini_i = 0, i = 0;
+    int j = 0;
+    int tmp_len = strlen(tmp);
+    char *ret = (char *)malloc((tmp_len + 1) * sizeof(char));
 
-        if(tmp[i]== '\"'){
-            open_mark = 1-open_mark;
-            if(open_mark) ini_i = i+1;
-            i++;
-            continue;
-        }
-
-        if(open_mark || tmp[i]!= ';'){
-            if(k==j) ret[i-ini_i] = tmp[i];
-            i++;
-            continue;
-        }
-
-        if(tmp[i]== ';'){
-            if(k==j) {
-               ret[i-ini_i] = 0;
-               return ret;
+    while (tmp[i + 1] != '\0') {
+        if (tmp[i] == '\"') {
+            open_mark = 1 - open_mark;
+            if (open_mark) {
+                ini_i = i + 1;
             }
-            j++; ini_i = i+1;
+            i++;
+            continue;
+        }
+
+        if (open_mark || tmp[i] != ';') {
+            if (k == j) {
+                ret[i - ini_i] = tmp[i];
+            }
+            i++;
+            continue;
+        }
+
+        if (tmp[i] == ';') {
+            if (k == j) {
+                ret[i - ini_i] = 0;
+                return ret;
+            }
+            j++;
+            ini_i = i + 1;
         }
 
         i++;
     }
 
-    if(k==j) {
-       ret[i-ini_i] = 0;
-       return ret;
+    if (k == j) {
+        ret[i - ini_i] = 0;
+        return ret;
     }
 
-
+    free(ret);
     return NULL;
 }
+
 
 int is_equal_string(void *key1, void *key2)
 {
@@ -104,7 +111,6 @@ void mostrarJugadoresTomaji(Map *jugadores, int cantidadJugadores)
 
 List *importarRetosTomanji()
 {
-    retoTomanji retos;
     List *listaRetos = createList();
     FILE *fp = fopen ("retos.csv", "r");
 
@@ -123,49 +129,55 @@ List *importarRetosTomanji()
     int k=0;
     while (fgets (linea, 1023, fp) != NULL) 
     {
-        for(i=0; i<3; i++){
+        printf("Linea: %s\n", linea);
+        for(i=0; i<3; i++)
+        {
+            retoTomanji retos;
             const char *aux = get_csv_field(linea, i); 
-            
             switch(i)
             {
                 case 0: 
-                    //printf("TITULO: %s", aux);
+                    printf("TITULO: %s", aux);
                     strcpy(retos.tituloTomanji, aux);
                     break;
                 case 1: 
-                    //printf("RETO: %s", aux);
+                    printf("RETO: %s", aux);
                     strcpy(retos.retoTomanji, aux);
                     break;
                 case 2: 
-                    //printf("TRAGOS: %s", aux);
+                    printf("TRAGOS aux: %s\n", aux);
                     tragos = (int) strtol(aux, NULL, 10);
                     retos.tragos = tragos;
+                    break;
+                default: 
+                    printf("ERROR\n");
                     break;
             }
             printf("\n");
         }
+        cont++;
+        
+        retoTomanji *newRetos = malloc(sizeof(retoTomanji));
+        if (newRetos == NULL)
+        {
+            printf("No se pudo asignar memoria.\n");
+            exit(1);
+        }
 
-        retos.repetido = false;
+        newRetos->repetido = false;
         int random = rand() % 50;
         if (random % 2 == 0)
         {
-            pushFront(listaRetos, retos);
+            pushFront(listaRetos, newRetos);
         }
         else
         {
-            pushBack(listaRetos, retos);
+            pushBack(listaRetos, newRetos);
         }
         printf("\n");
         k++; if(k==50) break;
     }
 
-    /*for(k = 0 ; k < 49 ; k++)
-    {
-        printf("%s\n", arregloDeRetos[k].tituloTomanji);
-        printf("%s\n", arregloDeRetos[k].retoTomanji);
-        printf("%d\n", arregloDeRetos[k].tragos);
-        printf("\n");
-    }*/
     printf("Se importaron los retos\n");
     fclose(fp);
     sleep(2);
