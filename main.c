@@ -437,11 +437,65 @@ void mostrarPiramide()
 
 }
 
+void mostrarJugadoresCartas(Map *jugadores, int cantidadJugadores, int carta)
+{
+    printf("\n\n");
+    jugadorPiramide *jugador = firstMap(jugadores);
+    
+    printf("Jugadores que beben: \n");
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (jugador->cartas[j]->numero == carta)
+            {
+                printf("%s\n", jugador->nombre);
+                jugador->puntos++;
+                printf("Cartas: ");
+                for (int k = 0; k < 3; k++)
+                {
+                    switch (jugador->cartas[k]->numero)
+                    {
+                        case 1:
+                            printf("A");
+                            break;
+                        case 11:
+                            printf("J");
+                            break;
+                        case 12:
+                            printf("Q");
+                            break;
+                        case 13:
+                            printf("K");
+                            break;
+                        default:
+                            printf("%d", jugador->cartas[k]->numero);
+                            break;
+                    }
+
+                    if (k != 2)
+                    {
+                        printf(" - ");
+                    }
+                }
+                printf("\n\n");
+                printf(LINEA);
+                printf("\n");
+                break;
+            }
+
+        }
+        jugador = nextMap(jugadores);
+    }
+}
+
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 {
     Carta *carta[48];
     Carta *cartaAux[48] = {NULL};
     int ultimaCarta = 48;
+    int nuevaCarta = 0;
+    int posNuevaCarta = 0;
 
     for (int i = 0; i < 48; i++)
     {
@@ -474,16 +528,17 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         int i, j;
         int cont = 0;
         int numero = 0;
-
+        nuevaCarta = carta[posNuevaCarta]->numero;
+        posNuevaCarta++;
         for (i = 0; i < altura; i++) 
         {
             int espacios = (consoleWidth - base) / 2;
             int yAxis = i;
             gotoxy(espacios, i);
             
-            // gotoxy(espacios, i + 1);
-            // if (i > 1)
-            //     gotoxy(espacios, i + 1);
+            gotoxy(espacios, i + 1);
+            if (i > 1)
+            gotoxy(espacios, i + 1);
             for (j = 0; j < base; j++) 
             {
                 if (j )
@@ -570,6 +625,8 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
             }
             base += 2;
         }
+
+        mostrarJugadoresCartas(jugadores, cantidadJugadores, nuevaCarta);
 
         fflush(stdin);
         printf("\n\n");
