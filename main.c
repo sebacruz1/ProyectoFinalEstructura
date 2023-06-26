@@ -528,7 +528,6 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         int i, j;
         int cont = 0;
         int numero = 0;
-        nuevaCarta = carta[posNuevaCarta]->numero;
         posNuevaCarta++;
         for (i = 0; i < altura; i++) 
         {
@@ -539,9 +538,9 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
             gotoxy(espacios, i + 1);
             if (i > 1)
             gotoxy(espacios, i + 1);
+
             for (j = 0; j < base; j++) 
             {
-                if (j )
                 if (cont >= ultimaCarta)
                 {
                     switch (carta[numero]->numero)
@@ -571,11 +570,13 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
                     cartaAux[numerosImpresos] = carta[numero];
                     
+                    nuevaCarta = cartaAux[numerosImpresos]->numero;                    
+                    
                     if (numerosImpresos >= 0)
                     {
                         for (int k = numerosImpresos - 1; k >= 0; k--)
                         {   
-
+                        
                             switch (cartaAux[k]->numero)
                             {
                                 case 1:
