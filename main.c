@@ -202,7 +202,7 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
             reto = nextList(retos);
             continue;
         }
-        if (cont % 15)
+        if (cont % 15 == 0 && cont != 0)
         {
             printf("Desean Continuar? (S/N)\n");
             char respuesta;
@@ -242,12 +242,19 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
         printf("El jugador logro el reto?\n");
         printf("1. Si\n");
         printf("2. No\n");
+        printf("0. Salir\n");
+
         int respuesta;
         scanf("%d", &respuesta);
         getchar();
+
         if (respuesta == 1)
         {
             jugador->cantSorbos += reto->tragos;
+        }
+        else if (respuesta == 0)
+        {
+            return;
         }
 
         printf("Presione ENTER para continuar.\n");
@@ -261,6 +268,53 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
             jugador = firstMap(jugadores);
         }
     }
+}
+
+void finalizarJuego(Map *jugadores, int cantidadJugadores)
+{
+    mostrarJugadoresTomaji(jugadores, cantidadJugadores);
+
+    system("cls");
+    jugadorTomanji *jugador = firstMap(jugadores);
+    char ganador[20] = "\0";
+
+    printf("El ganador es ...");
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        int max = 0;
+        if (jugador->cantSorbos > max)
+        {
+            max = jugador->cantSorbos;
+            strcpy(ganador, jugador->nombreTomanji);
+        }
+        jugador = nextMap(jugadores);
+
+    }
+
+    if (strcmp(ganador, "\0") == 0)
+    {
+        gotoxy(10,10);
+        printf("No hay ganador. :C \n");
+        gotoxy(10,11);
+        printf("Presione ENTER para finalizar.\n");
+        system("pause >nul");
+        system("cls");
+        printf("Gracias por jugar.\n");	
+        sleep(3);
+        exit(0);
+        
+    }
+
+    gotoxy(10,9); 
+    printf(LINEA);
+    gotoxy(10,10);
+    printf("!!%s!!", ganador);
+    gotoxy(10,11);
+    printf(LINEA);
+    printf("Presione ENTER para continuar.\n");
+    system("pause >nul");
+    system("cls");
+    exit(0); 
 }
 
 void tomanji(Map *jugadores)
@@ -307,6 +361,7 @@ void tomanji(Map *jugadores)
     List *retos = importarRetosTomanji();
     system("cls");
     tomanjiRetos(retos, jugadores, cantidadJugadores);
+    finalizarJuego(jugadores, cantidadJugadores);
 }
 
 void mostrarJugadores(Map *jugadores, int cantidadJugadores)
