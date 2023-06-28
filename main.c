@@ -524,7 +524,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
         int consoleWidth = csbi.dwSize.X;
-        
+
         int i, j;
         int cont = 0;
         int numero = 0;
@@ -596,8 +596,6 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
             printf("\n");
             printf("\n\n");
             printf("\n");
-
-            
         }
 
         printf("Cartas Anteriores: \n");
@@ -621,6 +619,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                     printf("%d", cartaAux[i]->numero);
                     break;
             }
+            
             if (i % 10 == 0 && i != 0)
             {
                 printf("\n");
@@ -631,7 +630,9 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                 printf(" - ");
             }
             else if (i == 0 || i == 1)
+            {
                 printf(" - ");
+            }
         }
 
         mostrarJugadoresCartas(jugadores, cantidadJugadores, nuevaCarta);
@@ -647,13 +648,11 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
         {
             game = false;
         }
-
     }
 
     gotoxy(0, csbi.dwCursorPosition.Y + 2);
     Sleep(3000);
 }
-
 
 void piramide(Map *jugadores)
 {
