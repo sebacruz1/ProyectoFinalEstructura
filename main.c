@@ -574,41 +574,6 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
                     nuevaCarta = cartaAux[numerosImpresos]->numero;                    
                     
-                    if (numerosImpresos >= 0)
-                    {
-                        for (int k = numerosImpresos - 1; k >= 0; k--)
-                        {   
-                            a++;
-                            switch (cartaAux[k]->numero)
-                            {
-                                case 1:
-                                    printf(" A");
-                                    pos++;
-                                    break;
-                                case 11:
-                                    printf(" J");
-                                    pos++;
-                                    break;
-                                case 12:
-                                    printf(" Q");
-                                    pos++;
-                                    break;
-                                case 13:
-                                    printf(" K");
-                                    pos++;
-                                    break;
-                                case 14: 
-                                    printf(" A");
-                                    pos++;
-                                    break;
-                                default:
-                                    printf(" %d", cartaAux[k]->numero);
-                                    pos++;
-                                    break;
-                            }
-                        }
-                    }
-                    
                     numerosImpresos++;
 
                     if (numero < ultimaCarta)
@@ -627,6 +592,46 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
                 numero = ultimaCarta - 1;
             }
             base += 2;
+
+            printf("\n");
+            printf("\n\n");
+            printf("\n");
+
+            
+        }
+
+        printf("Cartas Anteriores: \n");
+        for (int i = 0; i < numerosImpresos; i++)
+        {
+            switch (cartaAux[i]->numero)
+            {
+                case 1:
+                    printf("A");
+                    break;
+                case 11:
+                    printf("J");
+                    break;
+                case 12:
+                    printf("Q");
+                    break;
+                case 13:
+                    printf("K");
+                    break;
+                default:
+                    printf("%d", cartaAux[i]->numero);
+                    break;
+            }
+            if (i % 10 == 0 && i != 0)
+            {
+                printf("\n");
+            }
+
+            if (i != numerosImpresos - 1 && i % 10 != 0)
+            {
+                printf(" - ");
+            }
+            else if (i == 0 || i == 1)
+                printf(" - ");
         }
 
         mostrarJugadoresCartas(jugadores, cantidadJugadores, nuevaCarta);
