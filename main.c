@@ -273,7 +273,8 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
 void finalizarJuego(Map *jugadores, int cantidadJugadores)
 {
     mostrarJugadoresTomaji(jugadores, cantidadJugadores);
-
+    printf("Presione ENTER para continuar.\n");
+    system("pause >nul");
     system("cls");
     jugadorTomanji *jugador = firstMap(jugadores);
     char ganador[20] = "\0";
