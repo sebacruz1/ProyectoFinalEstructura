@@ -490,10 +490,61 @@ void mostrarJugadoresCartas(Map *jugadores, int cantidadJugadores, int carta)
     }
 }
 
+void finalizarPiramide(Map *jugadores, int cantidadJugadores)
+{
+    mostrarJugadores(jugadores, cantidadJugadores);
+    printf("Presione ENTER para continuar.\n");
+    system("pause >nul");
+    system("cls");
+    jugadorPiramide *jugador = firstMap(jugadores);
+    char ganador[20] = "\0";
+
+    printf("El ganador es ...");
+    for (int i = 0; i < cantidadJugadores; i++)
+    {
+        int max = 0;
+        if (jugador->puntos > max)
+        {
+            max = jugador->puntos;
+            strcpy(ganador, jugador->nombre);
+        }
+        jugador = nextMap(jugadores);
+
+    }
+
+    if (strcmp(ganador, "\0") == 0)
+    {
+        gotoxy(10,10);
+        printf("No hay ganador. :C \n");
+        gotoxy(10,11);
+        printf("Presione ENTER para finalizar.\n");
+        system("pause >nul");
+        system("cls");
+        printf("Gracias por jugar.\n");	
+        sleep(3);
+        exit(0);
+        
+    }
+
+    gotoxy(10,9); 
+    printf(LINEA);
+    gotoxy(10,10);
+    printf("!!%s!!", ganador);
+    gotoxy(10,11);
+    printf(LINEA);
+    printf("Presione ENTER para continuar.\n");
+    system("pause >nul");
+    system("cls");
+    printf("Gracias por jugar.\n");	
+    sleep(3);
+    exit(0); 
+}
+
 void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 {
     Carta *carta[48];
     Carta *cartaAux[48] = {NULL};
+    int vueltas = 0;
     int ultimaCarta = 48;
     int nuevaCarta = 0;
     int posNuevaCarta = 0;
@@ -515,6 +566,7 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
     while (game)
     {
+        vueltas++;
         int base = 1;
         int pos = 0;
         bool flag = false;
@@ -640,8 +692,22 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
 
         fflush(stdin);
         printf("\n\n");
+        printf("Presione 0 Para Salir\n");
+
         printf("Presione enter para continuar.\n");
         system("pause >nul");
+
+        if (vueltas % 15 == 0)
+        {
+            system("cls");
+            printf("Desean Continuar? (S/N)\n");
+            char respuesta;
+            scanf("%c", &respuesta);
+            if (respuesta == 'N' || respuesta == 'n')
+            {
+                finalizarPiramide(jugadores, cantidadJugadores);
+            }
+        }
 
         system("cls");
 
@@ -652,7 +718,9 @@ void juegoPiramide(Map *jugadores, int cantidadJugadores, Stack *pila)
     }
 
     gotoxy(0, csbi.dwCursorPosition.Y + 2);
-    Sleep(3000);
+    sleep(3);
+
+    finalizarPiramide(jugadores, cantidadJugadores);
 }
 
 void piramide(Map *jugadores)
