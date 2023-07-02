@@ -19,8 +19,11 @@ void limpiarFlecha(int x, int y, int cantOpciones)
 void setConsoleColor(WORD color) 
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
     CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+    
     GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
+    
     SetConsoleTextAttribute(hConsole, color);
 }
 
@@ -101,6 +104,7 @@ int menu()
             limpiarFlecha(20, 13, 3);
             formatearOpcion(&opcion, 3);
             ubicarFlecha(20, 13, opcion);
+            
             if(cambiarOpcion(&opcion)) break;
         }
 
