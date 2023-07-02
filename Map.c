@@ -44,7 +44,9 @@ struct Map {
 };
 
 
-Map * createMap(int (*is_equal)(void* key1, void* key2)) {
+Map * createMap(int (*is_equal)(void* key1, void* key2)) 
+{
+    
     Map * new = (Map *)malloc(sizeof(Map));
     assert(new != NULL); // No hay memoria para reservar la Mapa.
     new->head = new->tail = new->current = NULL;
@@ -53,11 +55,13 @@ Map * createMap(int (*is_equal)(void* key1, void* key2)) {
     return new;
 }
 
-void setSortFunction(Map* map, int (*lower_than)(void* key1, void* key2)){
+void setSortFunction(Map* map, int (*lower_than)(void* key1, void* key2))
+{
     map->lower_than = lower_than;
 }
 
-void * firstMap(Map * list) {
+void * firstMap(Map * list) 
+{
     assert(list != NULL); // list no puede ser NULL.
 
     if (list->head == NULL) return NULL;
@@ -67,7 +71,8 @@ void * firstMap(Map * list) {
     return (void *)list->current->data;
 }
 
-void * nextMap(Map * list) {
+void * nextMap(Map * list) 
+{
     assert(list != NULL); // list no puede ser NULL.
 
     if (list->head == NULL || list->current == NULL || list->current->next == NULL) return NULL;
@@ -77,7 +82,8 @@ void * nextMap(Map * list) {
     return (void *)list->current->data;
 }
 
-void _pushFront(Map * list, void * key, void * value) {
+void _pushFront(Map * list, void * key, void * value) 
+{
     assert(list != NULL); // list no puede ser NULL.
 
     Node * new = _createNode(key, value);
@@ -128,7 +134,8 @@ void insertMap(Map * list, void * key, void * value){
     new->next = list->current->next;
     new->prev = list->current;
 
-    if (list->current->next != NULL) {
+    if (list->current->next != NULL) 
+    {
         list->current->next->prev = new;
     }
 
