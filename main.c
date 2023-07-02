@@ -189,6 +189,7 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
     printf("Comenzando el juego...\n");
     sleep(2);
     system("cls");
+    
     while (game == true)
     {
         if (cont == 50)
@@ -208,6 +209,7 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
             char respuesta;
             scanf("%c", &respuesta);
             getchar();
+            
             if (respuesta == 'N' || respuesta == 'n')
             {
                 return;
@@ -263,6 +265,7 @@ void tomanjiRetos(List *retos, Map *jugadores, int cantidadJugadores)
 
         reto = nextList(retos);
         jugador = nextMap(jugadores);
+        
         if (jugador == NULL)
         {
             jugador = firstMap(jugadores);
